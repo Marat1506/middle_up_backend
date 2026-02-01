@@ -79,6 +79,23 @@ function queueAddRequest(name: string): Promise<Item> {
 
 function queueOperation(type: 'select' | 'unselect' | 'reorder', key: string, data: any): Promise<any> {
   return new Promise((resolve, reject) => {
+    // Для операций unselect не делаем дедупликацию, так как они должны выполняться всегда
+    if (type === 'unselect') {
+      const request: QueuedRequest = {
+        type,
+        data,
+        resolve,
+        reject,
+        timestamp: Date.now(),
+        key: `${key}:${Date.now()}` // Уникальный ключ для каждого запроса
+      };
+      
+      operationQueue.push(request);
+      console.log(`Операция в очереди: ${type}, ключ: ${request.key}`);
+      return;
+    }
+    
+    // Для остальных операций оставляем дедупликацию
     const existingRequest = operationQueue.find(req => req.key === key);
     if (existingRequest) {
       const originalResolve = existingRequest.resolve;
@@ -290,6 +307,13 @@ app.delete('/api/select/:id', async (req: Request, res: Response) => {
     }
     
     console.log(`Запрос на отмену выбора элемента: ID ${id}`);
+    
+    // Проверяем, что элемент действительно выбран
+    if (!selectedItems.has(id)) {
+      console.log(`Элемент ${id} уже не выбран`);
+      return res.json({ success: true });
+    }
+    
     const result = await queueOperation('unselect', `unselect:${id}`, { id });
     res.json(result);
   } catch (error) {
