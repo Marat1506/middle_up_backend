@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "express": "^4.21.2",
-    "cors": "^2.8.5"
-  },
-  "devDependencies": {
+    "cors": "^2.8.5",
     "@types/express": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/node": "^24.10.1",
-    "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
   },
   "engines": {
     "node": ">=18.0.0"
