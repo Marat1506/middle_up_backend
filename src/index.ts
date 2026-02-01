@@ -2,7 +2,15 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://your-frontend-domain.vercel.app', 'https://your-frontend-domain.netlify.app']
+    : ['http://localhost:3000', 'http://localhost:5173'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 interface Item {
@@ -358,4 +366,5 @@ app.get('/api/stats', (req, res) => {
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
