@@ -169,8 +169,11 @@ setInterval(() => {
 
 app.get('/api/items', async (req: Request, res: Response) => {
   try {
-    const filter = (req.query.filter as string || '').toLowerCase();
-    const page = parseInt(req.query.page as string) || 0;
+    const filterParam = req.query.filter;
+    const pageParam = req.query.page;
+    
+    const filter = (typeof filterParam === 'string' ? filterParam : '').toLowerCase();
+    const page = parseInt(typeof pageParam === 'string' ? pageParam : '0') || 0;
     const limit = 20;
     
     console.log(`Запрос элементов: фильтр="${filter}", страница=${page}`);
@@ -209,8 +212,11 @@ app.get('/api/items', async (req: Request, res: Response) => {
 
 app.get('/api/selected', async (req: Request, res: Response) => {
   try {
-    const filter = (req.query.filter as string || '').toLowerCase();
-    const page = parseInt(req.query.page as string) || 0;
+    const filterParam = req.query.filter;
+    const pageParam = req.query.page;
+    
+    const filter = (typeof filterParam === 'string' ? filterParam : '').toLowerCase();
+    const page = parseInt(typeof pageParam === 'string' ? pageParam : '0') || 0;
     const limit = 20;
     
     console.log(`Запрос выбранных элементов: фильтр="${filter}", страница=${page}`);
@@ -256,7 +262,8 @@ app.post('/api/items', async (req: Request, res: Response) => {
 
 app.post('/api/select/:id', async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id);
+    const idParam = req.params.id;
+    const id = parseInt(typeof idParam === 'string' ? idParam : '0');
     if (isNaN(id)) {
       return res.status(400).json({ error: 'Invalid ID' });
     }
@@ -272,7 +279,8 @@ app.post('/api/select/:id', async (req: Request, res: Response) => {
 
 app.delete('/api/select/:id', async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id);
+    const idParam = req.params.id;
+    const id = parseInt(typeof idParam === 'string' ? idParam : '0');
     if (isNaN(id)) {
       return res.status(400).json({ error: 'Invalid ID' });
     }
