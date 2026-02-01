@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 
 const app = express();
@@ -167,7 +167,7 @@ setInterval(() => {
   }
 }, 1000);
 
-app.get('/api/items', async (req, res) => {
+app.get('/api/items', async (req: Request, res: Response) => {
   try {
     const filter = (req.query.filter as string || '').toLowerCase();
     const page = parseInt(req.query.page as string) || 0;
@@ -207,7 +207,7 @@ app.get('/api/items', async (req, res) => {
   }
 });
 
-app.get('/api/selected', async (req, res) => {
+app.get('/api/selected', async (req: Request, res: Response) => {
   try {
     const filter = (req.query.filter as string || '').toLowerCase();
     const page = parseInt(req.query.page as string) || 0;
@@ -238,7 +238,7 @@ app.get('/api/selected', async (req, res) => {
   }
 });
 
-app.post('/api/items', async (req, res) => {
+app.post('/api/items', async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
     if (!name || !name.trim()) {
@@ -254,7 +254,7 @@ app.post('/api/items', async (req, res) => {
   }
 });
 
-app.post('/api/select/:id', async (req, res) => {
+app.post('/api/select/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
@@ -270,7 +270,7 @@ app.post('/api/select/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/select/:id', async (req, res) => {
+app.delete('/api/select/:id', async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
@@ -286,7 +286,7 @@ app.delete('/api/select/:id', async (req, res) => {
   }
 });
 
-app.put('/api/reorder', async (req, res) => {
+app.put('/api/reorder', async (req: Request, res: Response) => {
   try {
     const { itemIds } = req.body as { itemIds: number[] };
     if (!Array.isArray(itemIds)) {
@@ -302,7 +302,7 @@ app.put('/api/reorder', async (req, res) => {
   }
 });
 
-app.get('/api/state', (req, res) => {
+app.get('/api/state', (req: Request, res: Response) => {
   try {
     const selectedIds = Array.from(selectedItems.keys());
     const selectedOrder = Array.from(selectedItems.values())
@@ -324,7 +324,7 @@ app.get('/api/state', (req, res) => {
   }
 });
 
-app.post('/api/state', (req, res) => {
+app.post('/api/state', (req: Request, res: Response) => {
   try {
     const { selectedIds, selectedOrder } = req.body;
     
@@ -352,7 +352,7 @@ app.post('/api/state', (req, res) => {
   }
 });
 
-app.get('/api/stats', (req, res) => {
+app.get('/api/stats', (req: Request, res: Response) => {
   res.json({
     totalItems: allItems.size,
     selectedItems: selectedItems.size,
