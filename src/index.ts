@@ -4,18 +4,23 @@ import cors from 'cors';
 const app = express();
 
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? [
-        'https://middle-up-frontend.vercel.app',
-        /\.vercel\.app$/,
-        /\.netlify\.app$/
-      ]
-    : ['http://localhost:3000', 'http://localhost:5173'],
-  credentials: true
+  origin: [
+    'https://middle-up-frontend.vercel.app',
+    'http://localhost:3000', 
+    'http://localhost:5173',
+    /\.vercel\.app$/,
+    /\.netlify\.app$/
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Обработка preflight запросов
+app.options('*', cors(corsOptions));
 
 interface Item {
   id: number;
