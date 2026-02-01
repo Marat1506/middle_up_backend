@@ -5,7 +5,11 @@ const app = express();
 
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.vercel.app', 'https://your-frontend-domain.netlify.app']
+    ? [
+        'https://middle-up-frontend.vercel.app',
+        /\.vercel\.app$/,
+        /\.netlify\.app$/
+      ]
     : ['http://localhost:3000', 'http://localhost:5173'],
   credentials: true
 };
